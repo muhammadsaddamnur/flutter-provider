@@ -12,11 +12,13 @@ class WeatherInfo with ChangeNotifier {
   int _temperatureVal = 25;
   String _title = "";
   List<PostAll> _postAll;
+  bool _loading;
 
   int get temperatureVal => _temperatureVal;
   String get temperatureType => _tempType;
   String get title => _title;
   List<PostAll> get postalltitle => _postAll;
+  bool get loading => _loading;
 
   set temperature(int newTemp) {
     _temperatureVal = newTemp;
@@ -54,11 +56,15 @@ class WeatherInfo with ChangeNotifier {
   }
 
   Future<List<PostAll>> fetchPostall() async {
+    _loading = true;
+    notifyListeners();
     final response =
         await http.get('https://jsonplaceholder.typicode.com/posts/');
 
     if (response.statusCode == 200) {
       // If the call to the server was successful, parse the JSON
+      _loading = false;
+      notifyListeners();
       return compute(postAllFromJson, response.body);
     } else {
       // If that call was not successful, throw an error.

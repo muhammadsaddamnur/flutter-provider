@@ -115,15 +115,18 @@ class GetPostsUi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var weatherInfo = Provider.of<WeatherInfo>(context);
-
-    return weatherInfo.postalltitle == null
-        ? Text("Masih kosong gan")
-        : ListView.builder(
-            itemCount: weatherInfo.postalltitle.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(weatherInfo.postalltitle[index].title.toString()),
-              );
-            });
+    print(weatherInfo.loading.toString());
+    return weatherInfo.loading == true
+        ? Center(child: CircularProgressIndicator())
+        : weatherInfo.postalltitle == null
+            ? Text("Masih kosong gan")
+            : ListView.builder(
+                itemCount: weatherInfo.postalltitle.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title:
+                        Text(weatherInfo.postalltitle[index].title.toString()),
+                  );
+                });
   }
 }
